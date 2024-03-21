@@ -1,22 +1,4 @@
-﻿;                 AAA               HHHHHHHHH     HHHHHHHHHKKKKKKKKK    KKKKKKK          ((((((   1111111                  ///////222222222222222     ))))))     
-;                A:::A              H:::::::H     H:::::::HK:::::::K    K:::::K        ((::::::( 1::::::1                 /:::::/2:::::::::::::::22  )::::::))   
-;               A:::::A             H:::::::H     H:::::::HK:::::::K    K:::::K      ((:::::::( 1:::::::1                /:::::/ 2::::::222222:::::2  ):::::::)) 
-;              A:::::::A            HH::::::H     H::::::HHK:::::::K   K::::::K     (:::::::((  111:::::1               /:::::/  2222222     2:::::2   )):::::::)
-;             A:::::::::A             H:::::H     H:::::H  KK::::::K  K:::::KKK     (::::::(       1::::1              /:::::/               2:::::2     )::::::)
-;            A:::::A:::::A            H:::::H     H:::::H    K:::::K K:::::K        (:::::(        1::::1             /:::::/                2:::::2      ):::::)
-;           A:::::A A:::::A           H::::::HHHHH::::::H    K::::::K:::::K         (:::::(        1::::1            /:::::/              2222::::2       ):::::)
-;          A:::::A   A:::::A          H:::::::::::::::::H    K:::::::::::K          (:::::(        1::::l           /:::::/          22222::::::22        ):::::)
-;         A:::::A     A:::::A         H:::::::::::::::::H    K:::::::::::K          (:::::(        1::::l          /:::::/         22::::::::222          ):::::)
-;        A:::::AAAAAAAAA:::::A        H::::::HHHHH::::::H    K::::::K:::::K         (:::::(        1::::l         /:::::/         2:::::22222             ):::::)
-;       A:::::::::::::::::::::A       H:::::H     H:::::H    K:::::K K:::::K        (:::::(        1::::l        /:::::/         2:::::2                  ):::::)
-;      A:::::AAAAAAAAAAAAA:::::A      H:::::H     H:::::H  KK::::::K  K:::::KKK     (::::::(       1::::l       /:::::/          2:::::2                 )::::::)
-;     A:::::A             A:::::A   HH::::::H     H::::::HHK:::::::K   K::::::K     (:::::::((  111::::::111   /:::::/           2:::::2       222222  )):::::::)
-;    A:::::A               A:::::A  H:::::::H     H:::::::HK:::::::K    K:::::K      ((:::::::( 1::::::::::1  /:::::/            2::::::2222222:::::2 ):::::::)) 
-;   A:::::A                 A:::::A H:::::::H     H:::::::HK:::::::K    K:::::K        ((::::::(1::::::::::1 /:::::/             2::::::::::::::::::2)::::::)    
-;  AAAAAAA                   AAAAAAAHHHHHHHHH     HHHHHHHHHKKKKKKKKK    KKKKKKK          (((((( 111111111111///////              22222222222222222222 ))))))     
-
-
-
+﻿
 #NoEnv  ; Recommended for performance and compatibility with furectory.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting di
@@ -207,5 +189,54 @@ PutText(MyText)
    Return
 }
 
+
+
+
+;=============================================================================8
+
+/*
+   This script binds the Win+Enter hotkey combination to launch PowerShell.
+   It creates a new process for PowerShell, waits for the window to appear,
+   and then activates the PowerShell window.
+*/
+
+#Enter::
+Run, powershell, , , newPID
+WinWait, ahk_pid %newPID%
+WinActivate, ahk_pid %newPID%
+return
+
+
+
+;=============================================================================9
+
+/*
+   This script closes the active window when the Win+Q hotkey is pressed.
+*/
+#q::WinClose, A
+
+
+;=============================================================================10
+
+/*
+   This script binds the Win+X hotkey combination to show the shutdown/sleep/restart menu.
+*/
+
+#x::
+   ShutdownMenu:
+   Menu, ShutdownMenu, Add, &Sleep, MenuHandler
+   Menu, ShutdownMenu, Add, &Restart, MenuHandler
+   Menu, ShutdownMenu, Add, &Shutdown, MenuHandler
+   Menu, ShutdownMenu, Show
+   return
+
+   MenuHandler:
+   If (A_ThisMenuItem = "&Sleep")
+      DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
+   Else If (A_ThisMenuItem = "&Restart")
+      Shutdown, 4
+   Else If (A_ThisMenuItem = "&Shutdown")
+      Shutdown, 1
+   return
 
 
