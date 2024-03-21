@@ -1,7 +1,13 @@
 ﻿
-#NoEnv  ; Recommended for performance and compatibility with furectory.
+
+
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+; #Warn  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting di
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+#SingleInstance Force
+SetTitleMatchMode 2
+
 
 
 ;=============================================================================1
@@ -38,7 +44,7 @@ return
    Pressing the Shift + ` keys triggers this action.
 */
 
-+`::Run, %A_MyDocuments%
+#`::Run, %A_MyDocuments%
 
 
 ;=============================================================================3
@@ -84,12 +90,6 @@ if not A_IsAdmin
    ExitApp
 }
 
-#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-; #Warn  ; Enable warnings to assist with detecting common errors.
-SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-#SingleInstance Force
-SetTitleMatchMode 2
 
 
 !g::
@@ -141,6 +141,7 @@ if ErrorLevel  ; ClipWait timed out.
 }
 if RegExMatch(Clipboard, "^[^ ]*\.[^ ]*$")
 {
+   ; You can replace the path to msedge.exe with the path to your preferred browser.
    Run "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" %Clipboard%
 }
 else  
@@ -198,13 +199,16 @@ PutText(MyText)
    This script binds the Win+Enter hotkey combination to launch PowerShell.
    It creates a new process for PowerShell, waits for the window to appear,
    and then activates the PowerShell window.
-*/
+
+   */
 
 #Enter::
-Run, powershell, , , newPID
-WinWait, ahk_pid %newPID%
-WinActivate, ahk_pid %newPID%
+   Run, powershell -NoExit -Command "cd ~"
+   WinWait, Windows PowerShell
+   WinActivate, Windows PowerShell
 return
+
+
 
 
 
@@ -239,4 +243,4 @@ return
       Shutdown, 1
    return
 
-
+;=============================================================================
